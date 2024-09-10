@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main() {
+    string filename;
+    cout << "Enter the name of the file: ";
+    cin >> filename;
+
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Could not open the file!" << endl;
+        return 1;
+    }
+
+    int characters = 0, words = 0, lines = 0;
+    string line;
+
+    while (getline(file, line)) {
+        lines++;
+        characters += line.length();
+        bool inWord = false;
+        for (char c : line) {
+            if (isspace(c)) {
+                if (inWord) {
+                    words++;
+                    inWord = false;
+                }
+            } else {
+                inWord = true;
+            }
+        }
+        if (inWord) {
+            words++;
+        }
+    }
+
+    file.close();
+
+    cout << "Number of characters: " << characters << endl;
+    cout << "Number of words: " << words << endl;
+    cout << "Number of lines: " << lines << endl;
+
+    return 0;
+}
